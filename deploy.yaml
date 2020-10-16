@@ -1,0 +1,153 @@
+##################################################################################################
+# Product API
+##################################################################################################
+apiVersion: v1
+kind: Service
+metadata:
+  name: product-api
+  labels:
+    app: product-api
+    service: product-api
+spec:
+  ports:
+  - port: 80
+    name: http
+  selector:
+    app: product-api
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: ecom-product-api
+  labels:
+    account: product-api
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: product-api-v1
+  labels:
+    app: product-api
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: product-api
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: product-api
+        version: v1
+    spec:
+      serviceAccountName: ecom-product-api
+      containers:
+      - name: product-api
+        image: ecom-sample-product-api:v1
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+---
+##################################################################################################
+# Stock API
+##################################################################################################
+apiVersion: v1
+kind: Service
+metadata:
+  name: stock-api
+  labels:
+    app: stock-api
+    service: stock-api
+spec:
+  ports:
+  - port: 80
+    name: http
+  selector:
+    app: stock-api
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: ecom-stock-api
+  labels:
+    account: stock-api
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stock-api-v1
+  labels:
+    app: stock-api
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stock-api
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: stock-api
+        version: v1
+    spec:
+      serviceAccountName: ecom-stock-api
+      containers:
+      - name: stock-api
+        image: ecom-sample-stock-api:v1
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+---
+##################################################################################################
+# Product Gateway API
+##################################################################################################
+apiVersion: v1
+kind: Service
+metadata:
+  name: product-gateway-api
+  labels:
+    app: product-gateway-api
+    service: product-gateway-api
+spec:
+  ports:
+  - port: 80
+    name: http
+  selector:
+    app: product-gateway-api
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: ecom-product-gateway-api
+  labels:
+    account: product-gateway-api
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: product-gateway-api-v1
+  labels:
+    app: product-gateway-api
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: product-gateway-api
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: product-gateway-api
+        version: v1
+    spec:
+      serviceAccountName: ecom-product-gateway-api
+      containers:
+      - name: product-gateway-api
+        image: ecom-sample-product-gateway-api:v1
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+---
